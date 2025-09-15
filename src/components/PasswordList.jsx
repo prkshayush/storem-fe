@@ -105,13 +105,13 @@ export default function PasswordList() {
                 <p className="font-semibold"> <span className='text-sm font-light'>Username: </span>{pw.username}</p>
                 <div className="flex items-center">
                   <input
-                    type={visible[pw.id] ? 'text' : 'password'}
+                    type={visible[pw.id] ? 'password' : 'text'}
                     value={pw.password}
                     readOnly
                     className="border p-1 rounded bg-gray-100 w-40 text-center select-all"
                   />
                   <button
-                    type="button"
+                    type="decrypt"
                     className="ml-2 text-black px-3 py-2 rounded-2xl shadow"
                     onClick={() => setVisible(v => ({ ...v, [pw.id]: !v[pw.id] }))}
                   >

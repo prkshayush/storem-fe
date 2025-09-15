@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getUsers, createUser, deleteUser } from '../api/userApi';
+import { useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
@@ -54,6 +55,7 @@ export default function UserList() {
     }
   };
 
+  const navigate = useNavigate();
   return (
   <div className="p-4 w-full mx-auto">
       <div className='w-1/4 mx-auto'>
@@ -103,14 +105,25 @@ export default function UserList() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {users.map(user => (
-            <div key={user.id} className="flex flex-col justify-between border p-4 rounded-xl bg-white shadow h-full">
+            <div
+              key={user.id}
+              className="flex flex-col justify-between border p-4 rounded-xl bg-white shadow h-full cursor-pointer hover:bg-blue-50 transition"
+              onClick={e => {
+                // Prevent navigation if delete button is clicked
+                if (e.target.closest('button')) return;
+                navigate(`/users/${user.id}`);
+              }}
+            >
               <div className='flex-1 flex flex-col justify-center'>
                 <p><span className='text-sm font-light'>Username:</span> {user.username} </p>
                 <p><span className='text-sm font-light'>Email:</span> {user.email}</p>
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => handleDelete(user.id)}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleDelete(user.id);
+                  }}
                   className="text-black text-2xl px-4 py-2 rounded-3xl shadow cursor-pointer hover:bg-gray-100"
                   title="Delete user"
                 >
