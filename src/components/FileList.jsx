@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getFiles, createFiles, deleteFile } from '../api/fileApi';
+import { FaFolderPlus } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
 
 export default function FileList() {
   const [files, setFiles] = useState([]);
@@ -57,9 +59,8 @@ export default function FileList() {
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Files</h2>
-      <form onSubmit={handleSubmit} className="mb-6 space-y-2 bg-white p-4 rounded shadow">
+    <div className="p-4 max-w-full mx-auto">
+  <form onSubmit={handleSubmit} className="mb-6 space-y-2 bg-white p-4 rounded shadow w-1/4 mx-auto">
         <input
           name="fileName"
           value={form.fileName}
@@ -90,13 +91,15 @@ export default function FileList() {
           type="number"
           className="border p-2 rounded w-full"
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-3xl shadow hover:bg-blue-700"
-          disabled={creating}
-        >
-          {creating ? 'Adding...' : 'Add File'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-black px-3 py-2 text-sm rounded-3xl shadow hover:bg-blue-700"
+            disabled={creating}
+          >
+            {creating ? 'Adding...' : <div className='flex items-center text-2xl'><FaFolderPlus /></div>}
+          </button>
+        </div>
       </form>
       {loading ? (
         <div>Loading...</div>
@@ -104,17 +107,27 @@ export default function FileList() {
         <div className="text-red-600">{error}</div>
       ) : (
         <ul className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {files.map(file => (
+
             <li key={file.id} className="flex justify-between items-center border p-2 rounded bg-white shadow">
-              <span>{file.fileName} <span className="text-gray-500">({file.fileType})</span></span>
-              <button
-                onClick={() => handleDelete(file.id)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-3xl shadow hover:bg-blue-700"
-              >
-                Delete
-              </button>
+              <div className='flex-1 flex-col justify-center font-bold'>
+              <p><span className='text-sm font-light'>File name:</span> {file.fileName} </p>
+              <p className="text-gray-800 uppercase"><span className='text-sm lowercase font-light'>File type:</span> {file.fileType}</p>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleDelete(file.id)}
+                  className="text-black text-2xl px-4 py-2 rounded-3xl shadow cursor-pointer hover:bg-gray-100"
+                  title="Delete file"
+                >
+                  <MdDelete />
+                </button>
+              </div>
             </li>
           ))}
+
+          </div>
         </ul>
       )}
     </div>

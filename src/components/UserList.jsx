@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getUsers, createUser, deleteUser } from '../api/userApi';
+import { MdDelete } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -52,8 +55,8 @@ export default function UserList() {
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Users</h2>
+  <div className="p-4 w-full mx-auto">
+      <div className='w-1/4 mx-auto'>
       <form onSubmit={handleSubmit} className="mb-6 space-y-2 bg-white p-4 rounded shadow">
         <input
           name="username"
@@ -81,32 +84,42 @@ export default function UserList() {
           className="border p-2 rounded w-full"
           required
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-3xl shadow hover:bg-blue-700"
-          disabled={creating}
-        >
-          {creating ? 'Creating...' : 'Add User'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-black px-4 py-2 text-sm rounded-3xl shadow hover:bg-blue-700"
+            disabled={creating}
+          >
+            {creating ? 'Creating...' : <div className='flex items-center justify-center'><FaPlus /><FaUser /></div>}
+          </button>
+        </div>
       </form>
+
+      </div>
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
         <div className="text-red-600">{error}</div>
       ) : (
-        <ul className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {users.map(user => (
-            <li key={user.id} className="flex justify-between items-center border p-2 rounded bg-white shadow">
-              <span>{user.username} ({user.email})</span>
-              <button
-                onClick={() => handleDelete(user.id)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-3xl shadow hover:bg-blue-700"
-              >
-                Delete
-              </button>
-            </li>
+            <div key={user.id} className="flex flex-col justify-between border p-4 rounded-xl bg-white shadow h-full">
+              <div className='flex-1 flex flex-col justify-center'>
+                <p><span className='text-sm font-light'>Username:</span> {user.username} </p>
+                <p><span className='text-sm font-light'>Email:</span> {user.email}</p>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="text-black text-2xl px-4 py-2 rounded-3xl shadow cursor-pointer hover:bg-gray-100"
+                  title="Delete user"
+                >
+                  <MdDelete />
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

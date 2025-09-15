@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom';
 import FileList from '../components/FileList';
+import Navbar from '../components/Navbar';
 
 export default function FilesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="p-4 bg-blue-600 text-white text-2xl font-bold flex justify-between items-center">
-        <span>Files</span>
-        <Link to="/">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-3xl shadow hover:bg-blue-700">Home</button>
-        </Link>
-      </header>
+      <Navbar title="Files" />
       <main className="p-4">
         <FileList />
       </main>
